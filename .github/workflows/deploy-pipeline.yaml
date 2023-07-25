@@ -50,10 +50,9 @@ jobs:
      needs: build
      steps:
       - name: Create release
-        id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.ro_sey_mich }}
+          GITHUB_TOKEN: ${{ secrets.RO_SEY_MICH }}
         with:
           tag_name: ${{ github.run_number }}
           release_name: Release ${{ github.run_number }}
