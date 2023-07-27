@@ -41,11 +41,11 @@ jobs:
        - name: Configure AWS credentials
          uses: aws-actions/configure-aws-credentials@v1
          with:
-           aws-access-key-id: ${{ secrets.MY_AWS_ACCESS_KEY_ID }}
-           aws-secret-access-key: ${{ secrets.MY_AWS_SECRET_ACCESS_KEY_ID }}
+           aws-access-key-id: ${{ secrets.MY_AWS_ACCESS_KEY_IDP }}
+           aws-secret-access-key: ${{ secrets.MY_AWS_SECRET_ACCESS_KEY_IDP }}
            aws-region: us-east-1
        - name: Upload to S3
-         run: aws s3 cp ${{ github.sha }}.zip s3://myawsbucket4oojjajjfjdoaofklu4984kj/${{ github.sha }}.zip
+         run: aws s3 cp ${{ github.sha }}.zip s3://clouddivebucket/${{ github.sha }}.zip
          
   deploy:
      runs-on: ubuntu-latest
@@ -54,14 +54,14 @@ jobs:
        - name: Configure AWS credentials
          uses: aws-actions/configure-aws-credentials@v1
          with:
-           aws-access-key-id: ${{ secrets.MY_AWS_ACCESS_KEY_ID }}
-           aws-secret-access-key: ${{ secrets.MY_AWS_SECRET_ACCESS_KEY_ID }}
+           aws-access-key-id: ${{ secrets.MY_AWS_ACCESS_KEY_IDP }}
+           aws-secret-access-key: ${{ secrets.MY_AWS_SECRET_ACCESS_KEY_IDP }}
            aws-region: us-east-1
        - name: Update function code
          run: |
              aws lambda update-function-code \
-               --function-name cloud-function \
-               --s3-bucket myawsbucket4oojjajjfjdoaofklu4984kj \
+               --function-name clouds-function \
+               --s3-bucket clouddivebucket \
                --s3-key ${{ github.sha }}.zip \
                --publish
                
