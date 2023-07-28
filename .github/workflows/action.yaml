@@ -82,7 +82,7 @@ jobs:
              aws lambda create-function --function-name test-function \
              --code S3Bucket=clouddivebucket,S3Key=${{ github.sha }}.zip \
              --handler lambda_function.lambda_handler --runtime python3.8 \
-             --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/cloudlamb
+             --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/cloudlambda
        - name: Wait 30 seconds  
          run: sleep 30  
        - name: Destroy test function  
