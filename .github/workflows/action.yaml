@@ -66,7 +66,38 @@ jobs:
            aws-region: us-east-1
        - name: Upload to S3
          run: aws s3 cp ${{ github.sha }}.zip s3://clouddivebucket/${{ github.sha }}.zip
-         
+  
+  test: 
+     runs-on: ubuntu-latest
+     needs: upload
+     steps:
+       - name: Configure AWS credentials
+         uses: aws-actions/configure-aws-credentials@v1
+         with:
+           aws-access-key-id: ${{ secrets.MY_AWS_ACCESS_KEY_IDP }}
+           aws-secret-access-key: ${{ secrets.MY_AWS_SECRET_ACCESS_KEY_IDP }}
+           aws-region: us-east-1
+       - name: Create test function  
+         run: |  
+          aws lambda create-function --function-name test-function \  
+            --code S3Bucket=clouddivebucket,S3Key=${{ github.sha }}.zip \  
+            --handler lambda_function.lambda_handler --runtime python3.8 \  
+            --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/cloudlambda 
+       - name: Wait 30 seconds  
+         run: sleep 30  
+       - name: Destroy test function  
+         if: ${{ always() }}  
+         run: aws lambda delete-function --function-name test-function   
+     
+     
+     
+     
+     
+     
+     
+     
+  
+  
   deploy:
      runs-on: ubuntu-latest
      needs: upload
