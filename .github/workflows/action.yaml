@@ -89,7 +89,7 @@ jobs:
        - name: Invoke test function
          run: |
              aws lambda invoke --function-name test-function-Hi \
-               --payload "{\"input\": \"Hi\"}" \
+               --payload '{"input": "Hi"}' \
                --output json out
              if grep -q "FunctionError" out; then
                exit 1
