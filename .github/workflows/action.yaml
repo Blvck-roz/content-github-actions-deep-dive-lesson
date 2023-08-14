@@ -82,13 +82,13 @@ jobs:
            aws-region: us-east-1
        - name: Create test function  
          run: |  
-             aws lambda create-function --function-name test-function-${{ matrix.input }} \
+             aws lambda create-function --function-name clouds-function-${{ matrix.input }} \
              --code S3Bucket=clouddivebucket,S3Key=${{ github.sha }}.zip \
              --handler lambda_function.lambda_handler --runtime python3.8 \
              --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/cloudlambda
        - name: Invoke test function
          run: |
-             aws lambda invoke --function-name test-function-${{ matrix.input }} \
+             aws lambda invoke --function-name clouds-function-${{ matrix.input }} \
                --payload $(echo "{\"input\": \"${{ matrix.input }}\"}" | base64) \
                --output json out
              if grep -q "Error" out; then
